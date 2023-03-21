@@ -1,0 +1,73 @@
+SPRAWOZDANIE_MACIEJ_MATUSZEWSKI_LAB5_APRO2_23L
+Ex1
+Kod w klasie Coder służy do zaszyfrowania łańcucha znaków poprzez inkrementację wartości każdego znaku o 1. Natomiast
+kod w klasie Main odpowiada za sprawdzenie poprawności hasła na podstawie argumentu przekazanego do programu. Jeśli ilość
+argumentów jest różna od 1 lub długość poszczególnych części hasła nie jest równa 4, zostanie wyświetlony komunikat
+"Wrong password!". W przeciwnym przypadku sprawdzane jest, czy pierwsza część hasła jest równa zaszyfrowanemu łańcuchowi
+"CB42", a druga część jest równa aktualnemu roku. Jeśli oba warunki są spełnione, wyświetlany jest komunikat "Good
+guess". W przeciwnym razie wyświetlany jest komunikat "Wrong password!". UWAGA: Program nie weryfikuje, cos się dzieje
+po wprowadzeniu DC53_2023_(dowolny tekst), toteż jest możliwe wprowadzenie np. DC53_2023_Maciej i hasło wciąż będzie
+wykrywane jako dobre.
+Hasło to: DC53_2023
+
+Ex2
+Analiza metod:
+
+1. hexStringToByteArray(String hex) - Metoda konwertuje ciąg znaków heksadecymalnych na tablicę bajtów. Jest używana do
+dekodowania pewnych wartości w programie.
+2. decryptMessage(String message) - Metoda deszyfruje przesłaną wiadomość przy użyciu algorytmu AES w trybie CBC.
+Szyfrowanie odbywa się z wykorzystaniem klucza key zdefiniowanego jako pole klasy. Zdeszyfrowana wiadomość jest zwracana
+jako obiekt typu String.
+3. downloadFileFromURL(String address) - Metoda pobiera plik z podanego adresu URL i zapisuje go na dysku. Adres URL
+jest przekazywany jako argument metody. Pobrany plik jest zapisywany w lokalizacji określonej przez zdekodowane wartości
+current i filePath.
+4. extractFilesFromZip(Path filePath, Path dir) - Metoda wypakowuje plik ZIP do podanego folderu. Plik ZIP jest
+odczytywany z lokalizacji określonej przez filePath, a wynikowa struktura jest zapisywana w folderze określonym przez dir.
+
+
+W metodzie main:
+
+1.Odczytywana jest wartość systemowej właściwości o nazwie zaszyfrowanej w metodzie decryptMessage. Ta wartość jest
+przypisywana do zmiennej os.
+2. Wykonuje się odszyfrowanie wartości w zmiennej win.
+3. Wywoływana jest metoda downloadFileFromURL z zaszyfrowanym adresem URL jako argumentem.
+4. Na podstawie wartości os i win wykonuje się operacje w zależności od systemu operacyjnego. Jeśli wartość os zawiera
+zdekodowane win, wykonywane jest zewnętrzne polecenie zaszyfrowane w metodzie decryptMessage.
+
+
+Potencjalne zagrożenia:
+
+1. Odczytywanie i deszyfrowanie wartości z kodu może oznaczać, że program pobiera poufne informacje lub wykonuje złośliwe
+operacje na maszynie docelowej.
+2. Pobieranie i zapisywanie plików z internetu może oznaczać próbę wprowadzenia niechcianego oprogramowania lub ukrytego
+działania.
+3. Wypakowywanie plików z archiwum ZIP może skutkować rozprzestrzenianiem się złośliwego oprogramowania lub nadpisywaniem
+istniejących plików.
+4. Wywoływanie zewnętrznych poleceń na maszynie docelowej może otworzyć drzwi do wykonania dowolnych operacji przez złośliwe
+oprogramowanie.
+Podsumowując, kod ten wykazuje cechy potencjalnie złośliwego oprogramowania, takie jak deszyfrowanie, pobieranie
+plików z sieci, wypakowywanie plików z archiwum i wykonywanie zewnętrznych poleceń. Wykonanie tych operacji może
+spowodować różne szkody, takie jak naruszenie prywatności, infekcję systemu złośliwym oprogramowaniem lub niepożądane
+zmiany w konfiguracji systemu.
+
+Zagrożenia:
+Po odszyfrowaniu łańcuchów AES dostajemy kolejne informacje:
+user.dir
+zbsm.zip
+os.name
+Windows
+https://www.bamsoftware.com/hacks/zipbomb/zbsm.zip
+shutdown /s
+shutdown -h now
+Toteż wiemy skąd jest pobierany zip, jaką scieżkę obiera, pod jaką nazwą się zapisuje, na jakim systemie operacyjnym
+działa(weryfikuje, czy jest to Windows i jeśli jest to Windows to wykonuje shutdown /s, a jeśli Linux to wykonuje to
+shutdown -h now) i jakie operacje wykonuje. Zipbomba powoduje wymuszenie wyłączenia komputera.
+Co robi zipbomba zgodnie z opisem producenta:
+" non-recursive zip bomb that achieves a high compression ratio by overlapping files inside the zip container.
+"Non-recursive" means that it does not rely on a decompressor's recursively unpacking zip files nested within zip files:
+it expands fully after a single round of decompression. The output size increases quadratically in the input size,
+reaching a compression ratio of over 28 million (10 MB → 281 TB) at the limits of the zip format. Even greater
+expansion is possible using 64-bit extensions. The construction uses only the most common compression algorithm,
+DEFLATE, and is compatible with most zip parsers."
+
+
